@@ -1,5 +1,4 @@
 from itertools import combinations
-
 import Lattice as L
 
 
@@ -19,13 +18,30 @@ def create_powerset(s):
     return PowerSet
 
 
-def CreateLattice(datacontexts):
+def CreateLattice(datacontexts, dict1):
     Power_set = create_powerset(datacontexts)
     lattice1 = L.Lattice(Power_set, union, intersection)
-    print(lattice1.Hasse())
-    print("Bottom Element : ", lattice1.BottonElement, "Top Element : ", lattice1.TopElement)
+    print(lattice1.Hasse(dict1))
+    # print("Bottom Element : ", lattice1.BottonElement, "Top Element : ", lattice1.TopElement)
 
 
+def activate_points(Service_dict):
+    # Remove(Service_dict)
+    # print(Service_dict)
+    dotcode = ''
+    # Uelements = L.Lattice.get_uelements()
+    # for s, ds in graph.items():
+            # for d in ds:
+    for s in Service_dict.keys():
+        dotcode += "\""+str(set())+"\""
+        dotcode += " -> "
+        dotcode += "\""+str(Service_dict[s])+"\""
+        dotcode += "[arrowhead=none ];\n"
+    return dotcode
+
+# def Remove(Servicedict):
+#     service_dict {}
+#     for key, value
 
 
 

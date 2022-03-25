@@ -9,3 +9,5 @@ class Test:
 
 # p1 = Person("John", 36)
 # p1.myfunc()
+s = {'1'}
+print(dir(s))

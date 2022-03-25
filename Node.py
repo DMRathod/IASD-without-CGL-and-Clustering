@@ -9,10 +9,11 @@ class Node:
         self.ID = ID
         self.set_of_services = S
         self.set_of_dataContexts = D
+        # self.FID = FID
 
     def delta(self):
+        service_dict = {}
         for s in self.set_of_services:
-            print(s, random.sample(self.set_of_dataContexts, random.randint(0, 3)))
-
-
-
+            print(s, random.sample(self.set_of_dataContexts, random.randint(0, len(self.set_of_dataContexts))))
+            service_dict[s] = set(random.sample(self.set_of_dataContexts, random.randint(0, len(self.set_of_dataContexts))))
+        return service_dict

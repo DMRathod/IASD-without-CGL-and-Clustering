@@ -1,3 +1,4 @@
+import CreateLattice as Cl
 class Lattice(object):
     def __init__(self, Uelements,join_func,meet_func):
         '''Create a lattice:
@@ -22,6 +23,9 @@ class Lattice(object):
         '''
         return LatticeElement(self,object)
 
+    def get_uelements(self):
+        return self.Uelements
+
     def WElementByIndex(self,ElementIndex):
         return LatticeElement(self,self.Uelements[ElementIndex])
 
@@ -39,14 +43,17 @@ class Lattice(object):
             botton &= self.wrap(element)
         return botton
 
-    def Hasse(self):
+    def Hasse(self, dict1):
         graph=dict()
+        graph_str = dict()
         for indexS,elementS in enumerate(self.Uelements):
             graph[indexS]=[]
             for indexD,elementD in enumerate(self.Uelements):
                 if self.wrap(elementS) <= self.wrap(elementD):
                     if not bool( sum([ int(self.WElementByIndex(x) <= self.wrap(elementD)) for x in graph[indexS]])) and not elementS==elementD:
                         graph[indexS]+=[indexD]
+        # print(graph.items())
+        # print(self.Uelements)
         dotcode='digraph G {\nsplines="line"\nrankdir=BT\n'
         dotcode+='\"'+str(self.TopElement.unwrap)+'\" ;\n'
         dotcode+='\"'+str(self.BottonElement.unwrap)+'\" ;\n'
@@ -56,13 +63,22 @@ class Lattice(object):
                 dotcode += " -> "
                 dotcode += "\""+str(self.WElementByIndex(d))+"\""
                 dotcode += "[ style=dotted arrowhead=none ];\n"
+                # graph_str[str(self.WElementByIndex(s))] += str(self.WElementByIndex(d))
+        # dotcode += Cl.activate_points(dict1)
         dotcode += "}"
         try:
             from scapy.all import do_graph
             do_graph(dotcode)
         except:
             pass
-        return dotcode
+        print(graph)
+        print(self.Uelements)
+        for i, ele in graph.items():
+            # print(self.Uelements[i])
+            for k in ele:
+                print(self.Uelements[k])
+            graph_str[str(self.Uelements[i])] = [self.Uelements[k] for k in ele]
+        return graph_str
 
     def __repr__(self):
         """Represents the lattice as an instance of Lattice."""
