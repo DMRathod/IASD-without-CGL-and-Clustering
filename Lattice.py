@@ -71,14 +71,15 @@ class Lattice(object):
             do_graph(dotcode)
         except:
             pass
-        print(graph)
-        print(self.Uelements)
+        # print(graph)
+        # print(self.Uelements)
         for i, ele in graph.items():
             # print(self.Uelements[i])
             for k in ele:
                 print(self.Uelements[k])
             graph_str[str(self.Uelements[i])] = [self.Uelements[k] for k in ele]
-        return graph_str
+        print(graph_str)
+        return graph
 
     def __repr__(self):
         """Represents the lattice as an instance of Lattice."""
