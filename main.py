@@ -6,7 +6,7 @@ import CreateLattice as Cl
 
 if __name__ == '__main__':
     n1 = Node.Node(1, ['s1', 's2', 's3'], ['d1', 'd2'])
-    n2 = Node.Node(2, ['s1', 's2'], ['d1', 'd3'])
+    n2 = Node.Node(2, ['s1', 's2'], ['d1', 'd3', 'd4'])
     n3 = Node.Node(3, ['s3'], ['d1', 'd2'])
     # n0 = Node.Node(0, ['s4'], ['d3', 'd4'])
 
@@ -40,9 +40,14 @@ if __name__ == '__main__':
     # network.add_node(f1)
     # network.add_node(f2)
     #
-    network.add_edge(f1, n1)
-    network.add_edge(f1, n2)
-    network.add_edge(f1, n3)
+    nodes = [n1, n2, n3]
+    for i in nodes:
+        network.add_edge(f1, i)
+
+
+    # network.add_edge(f1, n1)
+    # network.add_edge(f1, n2)
+    # network.add_edge(f1, n3)
     # network.add_edge(f1, n4)
     # network.add_edge(f1, n5)
 

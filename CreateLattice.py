@@ -28,10 +28,28 @@ def CreateLattice(datacontexts, dict1):
     map_dict = {}
     i = 0
     # request = [{'d1', 'd3'}, {'d2', 'd3'}, {'d1', 'd2'}, {'d3'}, {'d2', 'd3', 'd1'}]
-    request = [{'d3'}, {'d2', 'd3', 'd1'}]
+    request = [{'d2'}, {'d2', 'd1'}, {'d3', 'd1'}, {'d2', 'd3'}, {'d2', 'd3', 'd1', 'd4'}]
     # for p, va in dict1.items():
     #     request.append(va)
     print('request:', request)
+
+    def recursive_comb(each, actual_element, length):
+        if length == 0:
+            return
+            # graph[0][map_dict[str(each)]] = graph[map_dict[str(each)]][0] = 1
+        comb = combinations(each, length)
+        comb_result = [set(i) for i in comb]
+        for i in comb_result:
+            row = graph[map_dict[str(i)]]
+            if 1 in row:
+                graph[map_dict[str(actual_element)]][map_dict[str(i)]] = 1
+                graph[map_dict[str(i)]][map_dict[str(actual_element)]] = 1
+        if 1 not in graph[map_dict[str(actual_element)]]:
+            for j in comb_result:
+                recursive_comb(j, actual_element, length-1)
+        else:
+            return
+
     for each in Power_set:
         map_dict[str(each)] = i
         i += 1
@@ -43,23 +61,34 @@ def CreateLattice(datacontexts, dict1):
         if len(each) == 1:
             graph[0][map_dict[str(each)]] = graph[map_dict[str(each)]][0] = 1
         else:
-            comb = combinations(each, len(each)-1)
-            comb_result = [set(i) for i in comb]
-            for i in comb_result:
-                row = graph[map_dict[str(i)]]
-                if 1 in row:
-                    graph[map_dict[str(each)]][map_dict[str(i)]] = 1
-                    graph[map_dict[str(i)]][map_dict[str(each)]] = 1
+            recursive_comb(each, each, len(each)-1)
             if 1 not in graph[map_dict[str(each)]]:
                 graph[map_dict[str(each)]][0] = graph[0][map_dict[str(each)]] = 1
 
+            # graph[map_dict[str(each)]][0] = graph[0][map_dict[str(each)]] = 1
 
 
 
 
 
-            print('result :', comb_result)
-            pass
+
+
+            # length = len(each) - 1
+            # comb = combinations(each, len(each)-1)
+            # comb_result = [set(i) for i in comb]
+            # for i in comb_result:
+            #     row = graph[map_dict[str(i)]]
+            #     if 1 in row:
+            #         graph[map_dict[str(each)]][map_dict[str(i)]] = 1
+            #         graph[map_dict[str(i)]][map_dict[str(each)]] = 1
+
+
+
+
+
+
+            # print('result :', comb_result)
+            # pass
 
 
 
