@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 import CreateLattice as Cl
 
 if __name__ == '__main__':
-    n1 = Node.Node(1, ['s1', 's2', 's3'], ['d1', 'd2'])
+    n1 = Node.Node('N'+ str(1), ['s1', 's2', 's3'], ['d1', 'd2'])
     n2 = Node.Node(2, ['s1', 's2'], ['d1', 'd3', 'd4'])
     n3 = Node.Node(3, ['s3'], ['d1', 'd2'])
     # n0 = Node.Node(0, ['s4'], ['d3', 'd4'])
 
     dict1 = n1.delta()
-
+    print(n1.ID)
     # Cl.activate_points(dict1)
     print("dict : ", len(dict1), dict1)
     # n5 = Node.Node(5, ['s1', 's2', 's3', 's4', 's5', 's6'], ['d1', 'd2', 'd3', 'd4', 'd5'])
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     # help(n5)
     # dir(n5)
     # print(n1.set_of_services)
-    f1 = fg.Fog(101, 'fog1')
+    f1 = fg.Fog(101)
     # f2 = fg.Fog(102, 'fog2')
 
     network = nx.Graph()
@@ -90,7 +90,7 @@ if __name__ == '__main__':
 
 
     # string = ['a', 'b', 'c', 'd']
-    print(f1.Dc)
+    # print(f1.Dc)
     Cl.CreateLattice(f1.Dc,dict1)
     # Cl.CreateLattice(f2.Dc)
 
