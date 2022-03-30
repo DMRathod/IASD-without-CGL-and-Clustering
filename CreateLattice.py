@@ -1,6 +1,8 @@
-from itertools import combinations
+from itertools import combinations, count
 import Lattice as L
 import numpy as np
+
+temp_list = []
 
 def intersection(a, b):
     return a & b
@@ -28,7 +30,7 @@ def create_powerset1(s):
 
 
 def CreateLattice(datacontexts, dict1):
-    global flag
+    global flag, temp_list
     flag = 0
     Power_set = create_powerset(datacontexts)
     r = c = len(Power_set)
@@ -41,40 +43,35 @@ def CreateLattice(datacontexts, dict1):
     graph_visited = {frozenset(): []}
     i = 0
     # request = [{'d1', 'd3'}, {'d2', 'd3'}, {'d1', 'd2'}, {'d3'}, {'d2', 'd3', 'd1'}]
-    request = [{'d2'}, {'d1', 'd2'}, {'d1', 'd2', 'd3'}, {'d1'}]
+    element1 = {'d1', 'd2'}
+    element2 = {'d1', 'd3'}
+    print(intersection(element1, element2), union(element2, element1))
+    request = [{'d2'}, {'d1', 'd2'}, {'d1', 'd2', 'd3'}, {'d1', 'd2', 'd3', 'd4'}, {'d1'
+                                                                                    ''}]
     # for p, va in dict1.items():
     #     request.append(va)
     print('request:', request)
-    def selected_combinations(actual_element, length):
-        result = []
-        combi = combinations(actual_element, length)
-        for i in combi:
-            pass
 
 
     def recursive_comb(each, actual_element, length):
+        global temp_list
         temp = []
         f = 0
         if length == 0:
             return
         comb = combinations(each, length)
-        for element in comb:
-            if frozenset(element) in graph_dict.keys():
-                print(bool(graph_dict[frozenset(element)]))
-                print(graph_dict[frozenset(element)])
-                combi = combinations(actual_element, len(element) + 1)
-                # combi1 = selected_combinations(actual_element, len(element)+1)
-                for m in combi:
-                    if set(element).issubset(set(m)):
-                        temp.append(set(m))
-                for ele in temp:
-                    if ele in graph_dict[frozenset(element)]:
-                        f = 1
-                if(f == 0):
-                    graph_dict[frozenset(element)].append(set(actual_element))
+        comb_set = [set(i) for i in comb]
+        visited = [0 for i in range(len(comb_set))]
+
+        for index, element in enumerate(comb_set):
+            if frozenset(element) in graph_dict.keys() and element not in temp_list:
+                temp_list.append(element)
+                graph_dict[frozenset(element)].append(set(actual_element))
+                visited[index] = 1
                 global flag
                 flag = 1
-            else:
+        for index, element in enumerate(comb_set):
+            if visited[index] == 0:
                 recursive_comb(element, actual_element, length - 1)
 
 
