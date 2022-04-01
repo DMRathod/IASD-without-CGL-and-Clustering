@@ -1,0 +1,43 @@
+intent aware service delivery
+Assumption : intent is known
+
+
+example : navigation as service 
+
+example of an intent : route with fuel station 
+
+
+framework : 1-edge layer, 2-fog layer, 3-cloud layer
+
+
+edge layer =  service provider, serivce consumers
+fog layer =  service provider
+cloud layer =  service provider
+
+provider with service, datacontext
+consumer with intent, service request
+
+
+edge layer with clusters
+fog layer with fog nodes as cluster head
+cloud layer with datacenters
+
+
+cluster is constructed based on a metric or a neighbourhood defined with the help of 
+1) physical distance(region) between nodes
+2) similar types services 
+3) Data context 
+4) node density
+
+clustering algos:
+
+1 - k-means 
+2 - HAC
+3 - affinity assignment based on distance to cluster heads
+
+
+
+
+
+1 service provider to the user 
+ 
