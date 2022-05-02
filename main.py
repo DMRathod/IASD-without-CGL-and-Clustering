@@ -3,20 +3,48 @@ import networkx as nx
 import Fog as fg
 import ClusterHead
 import CreateConnectedClusterHeads as CG
+import CreateConnectingPoints as CP
 import ClusterHead as CH
 import matplotlib.pyplot as plt
 import CreateLattice as Cl
 
 if __name__ == '__main__':
 
-    graph = CG.Create_graph()
+    graph = CG.cluster_head_list()
+
+
+    point_graph = CP.CreateConnectingPoint()
+    connecting_point_graph = point_graph.connecting_point_adjacency_list
+    print(connecting_point_graph)
+
+
+
+    for item in connecting_point_graph.items():
+        print(item[0].name, end="")
+        for it in item[1]:
+            print(it[0].name, end='')
+
+
+
     # print(graph)
     visited = {}
     for key in graph.keys():
         visited[key] = False
 
-    source_coordinates = (1, 8)
-    destination_coordinates = (13, 1)
+    source_coordinates = (20, 50)
+    destination_coordinates = (110, 8)
+
+
+
+
+    # Config1 =  CG.Create_clusters()
+    # result = Config1.assign_connecting_points()
+    # print(result)
+    # for r in result:
+    #     print(r.name, end='')
+
+
+
 
 
 
@@ -25,7 +53,21 @@ if __name__ == '__main__':
     # visited = [False] * (len(graph)+1)
     # print(visited)
 
+
+    # this will give us the list of cluster with which we need to communicate
     clusterslist = CH.get_list_of_clusters(graph, source_coordinates, destination_coordinates)
+
+    # creating physical location points for generating the graph
+    # points = CP.CreateConnectingPoint.get_connecting_points()
+
+
+
+
+
+
+
+
+
     # print(clusterslist)
     if clusterslist:
         for i in clusterslist:

@@ -17,11 +17,11 @@ def get_list_of_clusters(graph, source, destination):
             destination1 = each
             d_exist = True
 
-    if s_exist or d_exist:
+    if s_exist == False or d_exist == False:
         print("Source or destination Does not exist")
         return
 
-    limitation_factor = 1.1
+    limitation_factor = 1
     list_of_cluster_heads = []
     # Variation of BFS
     # visited = [False] * (len(graph)+1)
@@ -50,6 +50,22 @@ def get_list_of_clusters(graph, source, destination):
 
 class ClusterHead:
 
-    def __init__(self, x_coordinate, y_coordinate):
+    def __init__(self, x_coordinate, y_coordinate, name):
+        self.list_of_connectingPoints = []
+        self.name = name
         self.x_coordinate = x_coordinate
         self.y_coordinate = y_coordinate
+
+    # return after checking if any other valid connecting point or not
+    # def include_connecting_points(self, points, bound):
+    #     # distance_dict = {}
+    #     for each in points:
+    #         d = np.sqrt((each.x_coordinate - self.x_coordinate) ** 2 + (each.y_coordinate - self.y_coordinate) ** 2)
+    #         print("cluster head", each.name, d)
+    #         if d <= bound:
+    #             self.list_of_connectingPoint.append(each)
+    #     return self.list_of_connectingPoint
+
+    # return the existing list of the connecting points
+    def print_connecting_points(self):
+        return self.list_of_connectingPoint
