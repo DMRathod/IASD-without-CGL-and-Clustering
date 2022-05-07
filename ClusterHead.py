@@ -1,8 +1,72 @@
-import numpy as np
+import pickle
+from collections import defaultdict
 
+import numpy as np
+import createlatticeee as cgl
 
 def Euclidean_dist(p1, p2):
     return np.sqrt((p2.x_coordinate - p1.x_coordinate) ** 2 + (p2.y_coordinate - p1.y_coordinate) ** 2)
+
+
+def check_in_CGL(datacontext, cluster_head):
+    # CGL_dict = cgl.CGL([set(i) for i in datacontext])
+    for each in datacontext:
+        if each in cluster_head.CGL.keys():
+            return False
+    return True
+
+
+def init_CGL(db, name):
+    dbfile = open(name, 'wb')
+    pickle.dump(db, dbfile)
+    dbfile.close()
+
+
+def store_in_file():
+    db = nodes_to_children
+    dbfile = open('CGL1', 'wb')
+    pickle.dump(db, dbfile)
+    dbfile.close()
+
+def load_from_file():
+    dbfile = open('CGL1', 'rb')
+    db = pickle.load(dbfile)
+    for keys in db:
+        print(keys, "=>", db[keys])
+    dbfile.close()
+    return db
+
+
+def CGL(test_cases):
+    first = False
+    for req in test_cases:
+        length_to_node = defaultdict(set)
+        length_to_node[0] = {frozenset()}
+        if first:
+            nodes_to_children = defaultdict(set)
+        else:
+            nodes_to_children = load_from_file()
+        nodes_to_children[frozenset()] = set()
+        for node in req:
+            node_len = len(node)
+            length_to_node[node_len].add(frozenset(node))
+            connected_to_atleast_one = False
+            for i in range(node_len-1, -1, -1):
+                old_nodes = length_to_node[i]
+                for old_node in old_nodes:
+                    if old_node.issubset(node):
+                        nodes_to_children[frozenset(node)].add(frozenset(old_node))
+                        connected_to_atleast_one = True
+                if connected_to_atleast_one:
+                    break
+        # print(nodes_to_children)
+        for key, val in nodes_to_children.items():
+            print(f'{list(key)} :::: {[" ".join(i) for i in val]}')
+
+    store_in_file(nodes_to_children)
+    db = load_from_file()
+    return db
+
 
 
 def get_list_of_clusters(graph, source, destination):
@@ -51,10 +115,13 @@ def get_list_of_clusters(graph, source, destination):
 class ClusterHead:
 
     def __init__(self, x_coordinate, y_coordinate, name):
+        self.list_of_nodes = []
         self.list_of_connectingPoints = []
+        self.weights_of_connecting_points = []
         self.name = name
         self.x_coordinate = x_coordinate
         self.y_coordinate = y_coordinate
+        self.CGL = init_CGL([set('')], self.name)
 
     # return after checking if any other valid connecting point or not
     # def include_connecting_points(self, points, bound):
@@ -69,3 +136,7 @@ class ClusterHead:
     # return the existing list of the connecting points
     def print_connecting_points(self):
         return self.list_of_connectingPoint
+
+    def get_list_of_nodes(self):
+        return self.list_of_nodes
+

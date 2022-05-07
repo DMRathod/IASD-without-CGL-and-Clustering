@@ -57,7 +57,7 @@ class Create_clusters:
         # edges = [(p1, p2), (p1, p3), (p1, p5), (p5, p2), (p6, p2), (p3, p5), (p3, p4), (p4, p5), (p5, p6), (p6, p7), (p8, p1), (p2, p8), (p9, p6)]
         # print(adjacency_list)
 
-    def assign_connecting_points(self):
+    def assign_connecting_points1(self):
         cp = CP.CreateConnectingPoint()
         points = cp.get_connecting_points()
         cluster_heads = self.list_of_clusterheads
@@ -86,8 +86,8 @@ class Create_clusters:
                 bound_i += 1
 
                 # for j in head.list_of_connectingPoints:print(j)
-        for h in cluster_heads:
-            print(h.list_of_connectingPoints)
+        # for h in cluster_heads:
+        #     print(h.list_of_connectingPoints)
             # #
         for each in cluster_heads:
             print("from connecting point", each.name, each.list_of_connectingPoints)

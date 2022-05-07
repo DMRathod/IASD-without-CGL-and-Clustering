@@ -1,5 +1,6 @@
 class ConnectingPoint:
-    list_of_sensors = []
+    # we may or may not have list of node at connecting point
+    list_of_nodes_at_connecting_point = []
 
     def __init__(self, x_coordinate, y_coordinate, name):
         self.name = name

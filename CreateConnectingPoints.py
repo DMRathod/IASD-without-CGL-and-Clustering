@@ -45,9 +45,11 @@ class CreateConnectingPoint:
              (m, p), (m, q), (q, p), (p, o),
              (d, e), (d, f), (d, n), (e, n)]
     add_edges(edges, connecting_point_adjacency_list)
+    list_of_all_connecting_points.extend([a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t])
 
     def __init__(self):
-        self.list_of_all_connecting_points.extend([self.a, self.b, self.c, self.d,self.e, self.f, self.g, self.h, self.i, self.j, self.k, self.l, self.m, self.n, self.o, self.p, self.q, self.r, self.s, self.t])
+        pass
+        # self.list_of_all_connecting_points.extend([self.a, self.b, self.c, self.d,self.e, self.f, self.g, self.h, self.i, self.j, self.k, self.l, self.m, self.n, self.o, self.p, self.q, self.r, self.s, self.t])
 
 
     def get_connecting_points(self):

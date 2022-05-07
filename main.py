@@ -7,29 +7,41 @@ import CreateConnectingPoints as CP
 import ClusterHead as CH
 import matplotlib.pyplot as plt
 import CreateLattice as Cl
+import Assignment_of_nodes as An
 
 if __name__ == '__main__':
-
-    graph = CG.cluster_head_list()
-
+    Config1 = CG.Create_clusters()
+    # graph = CG.Create_clusters.get_graph_of_cluster_heads()
 
     point_graph = CP.CreateConnectingPoint()
     connecting_point_graph = point_graph.connecting_point_adjacency_list
-    print(connecting_point_graph)
+    for k, v in connecting_point_graph.items():
+        print(k.name, "=>", end='')
+        for e in v:
+            print(e[0].name, end='')
+        print()
+
+    # assignment of nodes
+    number_of_nodes = 20
+    list_of_all_nodes = An.assign_nodes_to_cluster(number_of_nodes)
+    list_of_all_nodes[0].service_request(source, destination)
 
 
 
-    for item in connecting_point_graph.items():
-        print(item[0].name, end="")
-        for it in item[1]:
-            print(it[0].name, end='')
+
+
+
+    # for item in connecting_point_graph.items():
+    #     print(item[0].name, end="")
+    #     for it in item[1]:
+    #         print(it[0].name, end='')
 
 
 
     # print(graph)
-    visited = {}
-    for key in graph.keys():
-        visited[key] = False
+    # visited = {}
+    # for key in graph.keys():
+    #     visited[key] = False
 
     source_coordinates = (20, 50)
     destination_coordinates = (110, 8)
@@ -38,10 +50,10 @@ if __name__ == '__main__':
 
 
     # Config1 =  CG.Create_clusters()
-    # result = Config1.assign_connecting_points()
+    result = Config1.assign_connecting_points1()
     # print(result)
     # for r in result:
-    #     print(r.name, end='')
+    #     print("Name of connecting point", r.name)
 
 
 
@@ -55,7 +67,7 @@ if __name__ == '__main__':
 
 
     # this will give us the list of cluster with which we need to communicate
-    clusterslist = CH.get_list_of_clusters(graph, source_coordinates, destination_coordinates)
+    # clusterslist = CH.get_list_of_clusters(graph, source_coordinates, destination_coordinates)
 
     # creating physical location points for generating the graph
     # points = CP.CreateConnectingPoint.get_connecting_points()
@@ -69,16 +81,16 @@ if __name__ == '__main__':
 
 
     # print(clusterslist)
-    if clusterslist:
-        for i in clusterslist:
-            print(f'({i.x_coordinate}, {i.y_coordinate})', end=" ")
-
-    n1 = Node.Node('N' + str(1), ['s1', 's2', 's3'], ['d1', 'd2'])
-    n2 = Node.Node(2, ['s1', 's2'], ['d1', 'd3', 'd4'])
-    n3 = Node.Node(3, ['s3'], ['d1', 'd2'])
+    # if clusterslist:
+    #     for i in clusterslist:
+    #         print(f'({i.x_coordinate}, {i.y_coordinate})', end=" ")
+    #
+    # n1 = Node.Node('N' + str(1), ['s1', 's2', 's3'], ['d1', 'd2'])
+    # n2 = Node.Node(2, ['s1', 's2'], ['d1', 'd3', 'd4'])
+    # n3 = Node.Node(3, ['s3'], ['d1', 'd2'])
     # n0 = Node.Node(0, ['s4'], ['d3', 'd4'])
 
-    dict1 = n1.delta()
+    # dict1 = n1.delta()
     # print(n1.ID)
     # Cl.activate_points(dict1)
     # print("dict : ", len(dict1), dict1)
@@ -93,13 +105,13 @@ if __name__ == '__main__':
     # help(n5)
     # dir(n5)
     # print(n1.set_of_services)
-    f1 = fg.Fog(101)
+    # f1 = fg.Fog(101)
     # f2 = fg.Fog(102, 'fog2')
 
-    network = nx.Graph()
-    network.add_node(n1)
-    network.add_node(n2)
-    network.add_node(n3)
+    # network = nx.Graph()
+    # network.add_node(n1)
+    # network.add_node(n2)
+    # network.add_node(n3)
     # network.add_node(n4)
     # network.add_node(n5)
     # network.add_node(n6)
@@ -108,9 +120,9 @@ if __name__ == '__main__':
     # network.add_node(f1)
     # network.add_node(f2)
     #
-    nodes = [n1, n2, n3]
-    for i in nodes:
-        network.add_edge(f1, i)
+    # nodes = [n1, n2, n3]
+    # for i in nodes:
+    #     network.add_edge(f1, i)
 
     # network.add_edge(f1, n1)
     # network.add_edge(f1, n2)
@@ -124,21 +136,21 @@ if __name__ == '__main__':
     #
     # network.add_edge(f2, f1)
 
-    f1_list = network.neighbors(f1)
-    # f2_list = network.neighbors(f2)
-
-    Datacontexts = set()
-    Serviceset = []
-    for each in f1_list:
-        if hasattr(each, 'ID'):
-            # print(each.ID, each.set_of_services, each.set_of_dataContexts)
-            Datacontexts.update(set(each.set_of_dataContexts))
-            Serviceset.append(each.set_of_services)
-    f1.Dc = Datacontexts.copy()
-    f1.Sc_union = Serviceset.copy()
-    Datacontexts.clear()
-    Serviceset.clear()
-    # for each in f2_list:
+    # f1_list = network.neighbors(f1)
+    # # f2_list = network.neighbors(f2)
+    #
+    # Datacontexts = set()
+    # Serviceset = []
+    # for each in f1_list:
+    #     if hasattr(each, 'ID'):
+    #         # print(each.ID, each.set_of_services, each.set_of_dataContexts)
+    #         Datacontexts.update(set(each.set_of_dataContexts))
+    #         Serviceset.append(each.set_of_services)
+    # f1.Dc = Datacontexts.copy()
+    # f1.Sc_union = Serviceset.copy()
+    # Datacontexts.clear()
+    # Serviceset.clear()
+    # # for each in f2_list:
     #     if hasattr(each, 'ID'):
     #         print(each.ID, each.set_of_services, each.set_of_dataContexts)
     #         Datacontexts.update(set(each.set_of_dataContexts))
@@ -155,7 +167,7 @@ if __name__ == '__main__':
 
     # string = ['a', 'b', 'c', 'd']
     # print(f1.Dc)
-    Cl.CreateLattice(f1.Dc, dict1)
+    # Cl.CreateLattice(f1.Dc, dict1)
     # Cl.CreateLattice(f2.Dc)
 
     # Cl.Creation_L(f1.Dc)
