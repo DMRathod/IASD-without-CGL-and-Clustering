@@ -7,7 +7,7 @@ import random
 
 
 def assign_nodes_to_cluster(number_of_nodes):
-    list_of_all_nodes = [Node.Node('N'+str(i), ['d1', 'd2']) for i in range(1, number_of_nodes+1)]
+    list_of_all_nodes = [Node.Node('N'+str(i), [[{'d1'}, {'d2'}]]) for i in range(1, number_of_nodes+1)]
     [print(i.name, end=" ") for i in list_of_all_nodes]
     print()
 

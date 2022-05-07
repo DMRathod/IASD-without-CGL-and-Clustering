@@ -30,6 +30,9 @@ if __name__ == '__main__':
     # print(list_of_all_nodes[1])
     # for i in list_of_all_nodes: print(i)
     list_of_all_nodes[0].service_request(source_coordinates, destination_coordinates)
+    list_of_all_nodes[0].set_of_dataContexts = [[{'d1'}, {'d2'}, {'d2', 'd3'}, {'d2', 'd4', 'd5'}]]
+
+    list_of_all_nodes[0].service_request(source_coordinates, destination_coordinates)
 
 
 

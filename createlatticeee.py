@@ -7,13 +7,15 @@ import pickle
 d = lambda _: f'd{_}'
 test_cases = [
     # [{'d1'}, {'d2'}, {'d1', 'd2'}],
-    [{d(1)}, {d(2)}],
-    # [{d(1)}],
+    # [{d(1)}, {d(2)}],
+    # [{d(1), d(2)}],
     [{d(1)}, {d(2)}, {d(2), d(3)}, {d(2), d(4), d(5)}],
-    # [{d(2)}, {d(1), d(2)}, {d(2), d(3)}, {d(1)}, {d(1), d(2), d(3)}],
+    [{d(2)}, {d(1), d(2)}, {d(2), d(3)}, {d(1)}, {d(1), d(2), d(3)}],
     # [{d(2)}, {d(3), d(4)}]
 ]
 
+
+print(test_cases)
 
 def store_in_file(nodes_to_children):
     db = nodes_to_children
@@ -66,4 +68,4 @@ def CGL(test_cases):
 
 
 
-# CGL(test_cases)
+CGL(test_cases)

@@ -154,9 +154,17 @@ class ClusterHead:
 
     def check_in_CGL(self, datacontext):
         # CGL_dict = cgl.CGL([set(i) for i in datacontext])
-        for each in datacontext:
-            if each in self.CGL.keys():
-                return True
+        print("CGL hai yeh" , self.CGL.keys())
+        for req in datacontext:
+            for each in req:
+                each = frozenset(each)
+                temp = True
+                if each in self.CGL.keys():
+                    temp = True
+                else:
+                    temp = False
+                if temp:
+                    return True
         return False
 
     def load_from_file(self):
@@ -175,14 +183,14 @@ class ClusterHead:
 
     def update_CGL(self, test_cases):
         print("testcase", test_cases)
-        first = True
+        first = False
         for req in test_cases:
             length_to_node = defaultdict(set)
             length_to_node[0] = {frozenset()}
             if first:
                 nodes_to_children = defaultdict(set)
             else:
-                nodes_to_children = self.load_from_file(self.name)
+                nodes_to_children = self.load_from_file()
             nodes_to_children[frozenset()] = set()
             for node in req:
                 node_len = len(node)
