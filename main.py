@@ -10,6 +10,9 @@ import CreateLattice as Cl
 import Assignment_of_nodes as An
 
 if __name__ == '__main__':
+    source_coordinates = (20, 50)
+    destination_coordinates = (110, 8)
+
     Config1 = CG.Create_clusters()
     # graph = CG.Create_clusters.get_graph_of_cluster_heads()
 
@@ -24,7 +27,9 @@ if __name__ == '__main__':
     # assignment of nodes
     number_of_nodes = 20
     list_of_all_nodes = An.assign_nodes_to_cluster(number_of_nodes)
-    list_of_all_nodes[0].service_request(source, destination)
+    # print(list_of_all_nodes[1])
+    # for i in list_of_all_nodes: print(i)
+    list_of_all_nodes[0].service_request(source_coordinates, destination_coordinates)
 
 
 
@@ -42,9 +47,9 @@ if __name__ == '__main__':
     # visited = {}
     # for key in graph.keys():
     #     visited[key] = False
-
-    source_coordinates = (20, 50)
-    destination_coordinates = (110, 8)
+    #
+    # source_coordinates = (20, 50)
+    # destination_coordinates = (110, 8)
 
 
 

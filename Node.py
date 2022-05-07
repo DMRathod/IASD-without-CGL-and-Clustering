@@ -25,10 +25,8 @@ class Node:
         return service_dict
 
     def service_request(self, source, destination):
-         CH.service_response(self.set_of_dataContexts, self.parent_cluster)
-        if not service_served_before:
-
-        CH.get_list_of_clusters()
+        self.parent_cluster.service_response(self.set_of_dataContexts, source, destination)
+        # CH.get_list_of_clusters()
 
 
 
