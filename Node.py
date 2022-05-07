@@ -25,7 +25,7 @@ class Node:
         return service_dict
 
     def service_request(self, source, destination):
-        service_served_before = CH.check_in_CGL(self.set_of_dataContexts, self.parent_cluster)
+         CH.service_response(self.set_of_dataContexts, self.parent_cluster)
         if not service_served_before:
 
         CH.get_list_of_clusters()

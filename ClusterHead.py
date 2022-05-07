@@ -4,6 +4,7 @@ from collections import defaultdict
 import numpy as np
 import createlatticeee as cgl
 
+
 def Euclidean_dist(p1, p2):
     return np.sqrt((p2.x_coordinate - p1.x_coordinate) ** 2 + (p2.y_coordinate - p1.y_coordinate) ** 2)
 
@@ -20,16 +21,17 @@ def init_CGL(db, name):
     dbfile = open(name, 'wb')
     pickle.dump(db, dbfile)
     dbfile.close()
+    return load_from_file(name)
 
 
-def store_in_file():
-    db = nodes_to_children
-    dbfile = open('CGL1', 'wb')
+def store_in_file(CGL_dict, name):
+    db = CGL_dict
+    dbfile = open(name, 'wb')
     pickle.dump(db, dbfile)
     dbfile.close()
 
-def load_from_file():
-    dbfile = open('CGL1', 'rb')
+def load_from_file(name):
+    dbfile = open(name, 'rb')
     db = pickle.load(dbfile)
     for keys in db:
         print(keys, "=>", db[keys])
@@ -37,15 +39,15 @@ def load_from_file():
     return db
 
 
-def CGL(test_cases):
-    first = False
+def create_CGL(test_cases, name):
+    first = True
     for req in test_cases:
         length_to_node = defaultdict(set)
         length_to_node[0] = {frozenset()}
         if first:
             nodes_to_children = defaultdict(set)
         else:
-            nodes_to_children = load_from_file()
+            nodes_to_children = load_from_file(name)
         nodes_to_children[frozenset()] = set()
         for node in req:
             node_len = len(node)
@@ -63,10 +65,8 @@ def CGL(test_cases):
         for key, val in nodes_to_children.items():
             print(f'{list(key)} :::: {[" ".join(i) for i in val]}')
 
-    store_in_file(nodes_to_children)
-    db = load_from_file()
-    return db
-
+    store_in_file(nodes_to_children, name)
+    return load_from_file(name)
 
 
 def get_list_of_clusters(graph, source, destination):
@@ -110,6 +110,13 @@ def get_list_of_clusters(graph, source, destination):
                     queue.append(i[0])
                     visited[i[0]] = True
     return list_of_cluster_heads
+
+
+def service_response(datacontext, parent_cluster, source, destination):
+    context_used_before = check_in_CGL(datacontext, parent_cluster)
+    if not context_used_before:
+        parent_cluster.CGL = create_CGL(datacontext, parent_cluster.name)
+
 
 
 class ClusterHead:
