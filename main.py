@@ -18,6 +18,7 @@ if __name__ == '__main__':
 
     point_graph = CP.CreateConnectingPoint()
     connecting_point_graph = point_graph.connecting_point_adjacency_list
+    print("Physical Connecting point")
     for k, v in connecting_point_graph.items():
         print(k.name, "=>", end='')
         for e in v:
@@ -29,9 +30,12 @@ if __name__ == '__main__':
     list_of_all_nodes = An.assign_nodes_to_cluster(number_of_nodes)
     # print(list_of_all_nodes[1])
     # for i in list_of_all_nodes: print(i)
-    list_of_all_nodes[0].service_request(source_coordinates, destination_coordinates)
-    list_of_all_nodes[0].set_of_dataContexts = [[{'d1'}, {'d2'}, {'d2', 'd3'}, {'d2', 'd4', 'd5'}]]
+    # list_of_all_nodes[0].service_request(source_coordinates, destination_coordinates)
+    # list_of_all_nodes[0].set_of_dataContexts = [[{'d3'}, {'d2'}]]
+    # list_of_all_nodes[0].set_of_dataContexts = [[{'d2'}, {'d2', 'd3'}, {'d2', 'd3', 'd1'}]]
+    # list_of_all_nodes[0].service_request(source_coordinates, destination_coordinates)
 
+    # list_of_all_nodes[0].set_of_dataContexts = [[{'d2'}, {'d3', 'd2'}]]
     list_of_all_nodes[0].service_request(source_coordinates, destination_coordinates)
 
 
@@ -58,6 +62,8 @@ if __name__ == '__main__':
 
 
     # Config1 =  CG.Create_clusters()
+
+    # Assign Connecting point to the clusters and return list of connecting point
     result = Config1.assign_connecting_points1()
     # print(result)
     # for r in result:

@@ -90,9 +90,7 @@ class Create_clusters:
         #     print(h.list_of_connectingPoints)
             # #
         for each in cluster_heads:
-            print("from connecting point", each.name, each.list_of_connectingPoints)
-
-
+            print("Connecting point from cluster", each.name, 'are', each.list_of_connectingPoints)
         return cp.get_connecting_points()
 
     def get_graph_of_cluster_heads(self):
