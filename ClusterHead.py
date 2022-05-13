@@ -127,7 +127,7 @@ class ClusterHead:
         self.name = name
         self.x_coordinate = x_coordinate
         self.y_coordinate = y_coordinate
-        self.CGL = self.initiate_CGL()
+        l, self.CGL = self.initiate_CGL()
 
     # return after checking if any other valid connecting point or not
     # def include_connecting_points(self, points, bound):
@@ -149,7 +149,7 @@ class ClusterHead:
     def requirement_to_datacontext(self, service_type):
         # we can assign some predefined datacontext to the services so that it can be used for constructing the CGL
         if service_type == 1:
-            return [[{'d3'}, {'d2'}]]
+            return [[{'d2'}]]
 
 
 
@@ -158,7 +158,7 @@ class ClusterHead:
     def service_response(self, service_type,  source, destination):
         datacontext = self.requirement_to_datacontext(service_type)
         context_used_before = self.check_in_CGL(datacontext)
-        print(datacontext)
+        print("data context = " , datacontext)
         if not context_used_before:
             self.CGL = self.update_CGL(datacontext)
         print("Updated CGL", context_used_before, self.CGL)
@@ -169,16 +169,19 @@ class ClusterHead:
     def check_in_CGL(self, datacontext):
         print("data Conetxt new one:", datacontext)
         CGL_keys = self.CGL.keys()
-        for each in datacontext[0]:
-            if frozenset(each) in CGL_keys:
-                datacontext[0].remove(each)
-        print("updated datacontext req", datacontext)
-
-
-
-        # CGL_dict = cgl.CGL([set(i) for i in datacontext])
-        # print("CGL hai yeh", self.CGL.items())
+        print("CGL in CHECK", self.CGL)
+        if frozenset(datacontext[0][0]) in CGL_keys:
+            return True
         return False
+
+
+        # use when you have series of data context
+
+        # for each in datacontext[0]:
+        #     if frozenset(each) in CGL_keys:
+        #         datacontext[0].remove(each)
+        # print("updated datacontext req", datacontext)
+        # return False
 
     def initiate_CGL(self):
         len_to_node = defaultdict(set)
@@ -195,7 +198,7 @@ class ClusterHead:
         # for keys in db:
         #     print(keys, "=>", db[keys])
         dbfile.close()
-        return db[1]
+        return db[0], db[1]
 
     def store_in_file(self, len_to_nodes, CGL_dict):
         db = (len_to_nodes, CGL_dict)
@@ -203,7 +206,7 @@ class ClusterHead:
         pickle.dump(db, dbfile)
         dbfile.close()
 
-    def update_CGL(self, test_cases, load_old):
+    def update_CGL(self, test_cases, load_old=True):
         # first = False
         for req in test_cases:
             if not load_old:
@@ -233,7 +236,7 @@ class ClusterHead:
                 # print(f'{list(key)} :::: {[print(va) for va in val]}')
         print("len to node", length_to_node)
         self.store_in_file(length_to_node, nodes_to_children)
-        db = self.load_from_file()
+        l, db = self.load_from_file()
         return db
 
 

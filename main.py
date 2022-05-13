@@ -16,14 +16,16 @@ if __name__ == '__main__':
     Config1 = CG.Create_clusters()
     # graph = CG.Create_clusters.get_graph_of_cluster_heads()
 
-    point_graph = CP.CreateConnectingPoint()
-    connecting_point_graph = point_graph.connecting_point_adjacency_list
-    print("Physical Connecting point")
-    for k, v in connecting_point_graph.items():
-        print(k.name, "=>", end='')
-        for e in v:
-            print(e[0].name, end='')
-        print()
+
+    # $$ print connecting points $$
+    # point_graph = CP.CreateConnectingPoint()
+    # connecting_point_graph = point_graph.connecting_point_adjacency_list
+    # print("Physical Connecting point")
+    # for k, v in connecting_point_graph.items():
+    #     print(k.name, "=>", end='')
+    #     for e in v:
+    #         print(e[0].name, end='')
+    #     print()
 
     # assignment of nodes
     number_of_nodes = 20

@@ -25,9 +25,9 @@ class Node:
         return service_dict
 
     def service_request(self, source, destination):
-        print("Self data context", self.set_of_dataContexts)
+        # print("Self data context", self.set_of_dataContexts)
         service_type = 1
-        self.parent_cluster.service_response(1, source, destination)
+        self.parent_cluster.service_response(service_type, source, destination)
         # CH.get_list_of_clusters()
 
 
