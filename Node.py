@@ -1,5 +1,5 @@
 import random
-import ClusterHead as CH
+
 
 class Node:
     set_of_services = []
@@ -24,10 +24,10 @@ class Node:
             service_dict[s] = set(random.sample(self.set_of_dataContexts, random.randint(1, len(self.set_of_dataContexts))))
         return service_dict
 
-    def service_request(self, source, destination):
+    def service_request(self, cluster_graph , source, destination):
         # print("Self data context", self.set_of_dataContexts)
         service_type = 1
-        self.parent_cluster.service_response(service_type, source, destination)
+        self.parent_cluster.service_response(service_type, cluster_graph, source, destination)
         # CH.get_list_of_clusters()
 
 

@@ -26,10 +26,15 @@ class Create_clusters:
     p7 = CHead.ClusterHead(110, 8, 'C7')
     edges = [(p1, p2), (p1, p3), (p1, p5), (p5, p2), (p6, p2), (p3, p5), (p3, p4), (p4, p5), (p5, p6), (p6, p7)]
     add_edges(edges, adjacency_list)
+    list_of_clusterheads = []
+    list_of_clusterheads.extend([p1, p2, p3, p4, p5, p6, p7])
+
+
 
     def __init__(self):
-        self.list_of_clusterheads = []
-        self.list_of_clusterheads.extend([self.p1, self.p2, self.p3, self.p4, self.p5, self.p6, self.p7])
+        pass
+        # self.list_of_clusterheads = []
+        # self.list_of_clusterheads.extend([self.p1, self.p2, self.p3, self.p4, self.p5, self.p6, self.p7])
         # p1 = CHead.ClusterHead(1, 8)
         # p2 = CHead.ClusterHead(7, 9)
         # p3 = CHead.ClusterHead(2, 3)
@@ -82,7 +87,7 @@ class Create_clusters:
                 d = np.sqrt((p.x_coordinate - head.x_coordinate) ** 2 + (p.y_coordinate - head.y_coordinate) ** 2)
                 # print("from assign points", p.name, head.name, d)
                 if d <= bounds[bound_i]:
-                    head.list_of_connectingPoints.append(p.name)
+                    head.list_of_connectingPoints.append(p)
                 bound_i += 1
 
                 # for j in head.list_of_connectingPoints:print(j)
@@ -90,7 +95,10 @@ class Create_clusters:
         #     print(h.list_of_connectingPoints)
             # #
         for each in cluster_heads:
-            print("Connecting point from cluster", each.name, 'are', each.list_of_connectingPoints)
+            print("Connecting point from cluster", each.name, 'are ', end="")
+            for i in each.list_of_connectingPoints:
+                print(i.name, end=" ")
+            print()
         return cp.get_connecting_points()
 
     def get_graph_of_cluster_heads(self):

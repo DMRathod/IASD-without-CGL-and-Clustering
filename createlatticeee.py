@@ -15,7 +15,7 @@ test_cases = [
 ]
 
 
-print(test_cases)
+# print(test_cases)
 
 def store_in_file(length_to_node, nodes_to_children):
     db = (length_to_node, nodes_to_children)

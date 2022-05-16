@@ -5,8 +5,8 @@ import Connecting_point as cp
 
 # Creating the physical location as connecting points
 def add_edges_on_node(node_one, node_two, graph):
-    graph[node_one].append((node_two, 0))
-    graph[node_two].append((node_one, 0))
+    graph[node_one].append([node_two, 0])
+    graph[node_two].append([node_one, 0])
 
 
 def add_edges(edges, graph):

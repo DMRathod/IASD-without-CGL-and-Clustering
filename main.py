@@ -2,9 +2,10 @@ import Node
 import networkx as nx
 import Fog as fg
 import ClusterHead
-import CreateConnectedClusterHeads as CG
-import CreateConnectingPoints as CP
-import ClusterHead as CH
+import Initialize
+# import CreateConnectedClusterHeads as CG
+# import CreateConnectingPoints as CP
+# import ClusterHead as CH
 import matplotlib.pyplot as plt
 import CreateLattice as Cl
 import Assignment_of_nodes as An
@@ -13,12 +14,12 @@ if __name__ == '__main__':
     source_coordinates = (20, 50)
     destination_coordinates = (110, 8)
 
-    Config1 = CG.Create_clusters()
+    # Config1 = CG.Create_clusters()
+    # point_graph = CP.CreateConnectingPoint()
     # graph = CG.Create_clusters.get_graph_of_cluster_heads()
 
 
     # $$ print connecting points $$
-    # point_graph = CP.CreateConnectingPoint()
     # connecting_point_graph = point_graph.connecting_point_adjacency_list
     # print("Physical Connecting point")
     # for k, v in connecting_point_graph.items():
@@ -28,8 +29,9 @@ if __name__ == '__main__':
     #     print()
 
     # assignment of nodes
-    number_of_nodes = 20
-    list_of_all_nodes = An.assign_nodes_to_cluster(number_of_nodes)
+    # number_of_nodes = 20
+    # list_of_all_nodes = An.assign_nodes_to_cluster(number_of_nodes)
+
     # print(list_of_all_nodes[1])
     # for i in list_of_all_nodes: print(i)
     # list_of_all_nodes[0].service_request(source_coordinates, destination_coordinates)
@@ -38,7 +40,6 @@ if __name__ == '__main__':
     # list_of_all_nodes[0].service_request(source_coordinates, destination_coordinates)
 
     # list_of_all_nodes[0].set_of_dataContexts = [[{'d2'}, {'d3', 'd2'}]]
-    list_of_all_nodes[0].service_request(source_coordinates, destination_coordinates)
 
 
 
@@ -66,21 +67,30 @@ if __name__ == '__main__':
     # Config1 =  CG.Create_clusters()
 
     # Assign Connecting point to the clusters and return list of connecting point
-    result = Config1.assign_connecting_points1()
+    # result = Config1.assign_connecting_points1()
     # print(result)
     # for r in result:
     #     print("Name of connecting point", r.name)
 
+    # $$ Initilize the structure $$
+    list_of_all_nodes, cluster_graph, point_graph = Initialize.Init_structure()
+    # print("list of nodes:", list_of_all_nodes)
+    # print("cluster graph :", cluster_graph)
+    # print("point graph:", point_graph)
 
 
 
+    # $$ service request from node to cluster head $$
+    # list_of_all_nodes[0].service_request(source_coordinates, destination_coordinates)
+    list_of_all_nodes[0].service_request(cluster_graph, source_coordinates, destination_coordinates)
 
 
     # print(graph)
     # print(graph.keys())
     # visited = [False] * (len(graph)+1)
     # print(visited)
-
+    # list1 = Config1.get_graph_of_cluster_heads()
+    # print(list1)
 
     # this will give us the list of cluster with which we need to communicate
     # clusterslist = CH.get_list_of_clusters(graph, source_coordinates, destination_coordinates)
