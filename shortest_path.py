@@ -15,7 +15,7 @@ def compute_shortest_path_heuristic(connecting_point_graph):
     graph = Graph(init_graph.keys(), init_graph)
     print(graph.get_nodes())
     previous_nodes, shortest_path = dijkstra_algorithm(graph=graph, start_node='a')
-    print_result(previous_nodes, shortest_path, start_node="a", target_node="p")
+    print_result(previous_nodes, shortest_path, start_node="a", target_node="k")
 
     #
     # for k, v in connecting_point_graph.items():

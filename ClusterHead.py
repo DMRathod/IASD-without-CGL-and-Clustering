@@ -107,7 +107,7 @@ def assign_weights_to_edges(weights_of_connecting_point):
                     p[1] = average_weights([p[1], temp])
                 else:
                     p[1] = average_weights([weights_of_connecting_point[each], weights_of_connecting_point[p[0]]])
-    print()
+        print()
             # print(p[0].name, p[1])
     for k, v in connecting_point_graph.items():
         print(k.name, "=>", end='')
