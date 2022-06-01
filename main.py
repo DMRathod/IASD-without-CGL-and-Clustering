@@ -11,8 +11,8 @@ import CreateLattice as Cl
 import Assignment_of_nodes as An
 
 if __name__ == '__main__':
-    source_coordinates = (20, 50)
-    destination_coordinates = (110, 8)
+    source_coordinates = (11, 59)
+    destination_coordinates = (55, 31)
 
     # Config1 = CG.Create_clusters()
     # point_graph = CP.CreateConnectingPoint()
@@ -76,10 +76,11 @@ if __name__ == '__main__':
     list_of_all_nodes, cluster_graph, point_graph = Initialize.Init_structure()
     # print("list of nodes:", list_of_all_nodes)
     # print("cluster graph :", cluster_graph)
-    # print("point graph:", point_graph)
+    print("point graph:", point_graph)
+    # g =nx.from_dict_of_lists(point_graph)
+    # print(g.edges())
 
-
-
+    # print(point_graph)
     # $$ service request from node to cluster head $$
     # list_of_all_nodes[0].service_request(source_coordinates, destination_coordinates)
     list_of_all_nodes[0].service_request(cluster_graph, source_coordinates, destination_coordinates)

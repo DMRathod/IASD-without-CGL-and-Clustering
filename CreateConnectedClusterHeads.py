@@ -87,6 +87,7 @@ class Create_clusters:
                 d = np.sqrt((p.x_coordinate - head.x_coordinate) ** 2 + (p.y_coordinate - head.y_coordinate) ** 2)
                 # print("from assign points", p.name, head.name, d)
                 if d <= bounds[bound_i]:
+                    p.parent_cluster = head  # assign cluster head to the point
                     head.list_of_connectingPoints.append(p)
                 bound_i += 1
 

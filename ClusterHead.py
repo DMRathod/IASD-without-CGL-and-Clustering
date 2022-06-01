@@ -1,6 +1,7 @@
 from collections import defaultdict
 import pickle
 import random
+import sys
 import Response_module as ResM
 # import CreateConnectedClusterHeads as CG
 import numpy as np
@@ -13,6 +14,7 @@ import createlatticeee as cgl
 
 point_graph = CP.CreateConnectingPoint()
 connecting_point_graph = point_graph.connecting_point_adjacency_list
+list_of_connecting_points = point_graph.get_connecting_points()
 
 # Config_of_cluster_heads = CG.Create_clusters()
 # cluster_graph = Config_of_cluster_heads.get_graph_of_cluster_heads()
@@ -201,6 +203,34 @@ class ClusterHead:
             d = random.choice(possible_contexts)
             # print("choice is :", d)
             return [d]
+    # validates the service request for existance of location and service type and it will return the corresponding cluster heads coordinates
+    @classmethod
+    def validate_service_request(cls, service_type, source, destination):
+        source_flag = False
+        destination_flag = False
+        temp_source = None
+        temp_destination = None
+        point_source = None
+        point_destination = None
+        for each in list_of_connecting_points:
+            if source[0] == each.x_coordinate and source[1] == each.y_coordinate:
+                temp_source = (each.parent_cluster.x_coordinate, each.parent_cluster.y_coordinate)
+                point_source = each.name
+                print("Source Found")
+                source_flag = True
+            if destination[0] == each.x_coordinate and destination[1] == each.y_coordinate:
+                temp_destination = (each.parent_cluster.x_coordinate, each.parent_cluster.y_coordinate)
+                destination_flag = True
+                point_destination = each.name
+            print(each.name, " x: ", each.x_coordinate, " y: ", each.y_coordinate)
+        if not source_flag or not destination_flag or service_type != 1:
+            sys.exit("Source or Destination point Does not exist or service type does not matched")
+        return temp_source, temp_destination, point_source, point_destination
+
+
+
+
+
 
     def compute_connecting_point_weight_from_datacontext(self, datacontext):
         # $$ randomly assigning the weights to the nodes, we can think some statistical method for assigning weights
@@ -233,7 +263,10 @@ class ClusterHead:
         assign_weights_to_edges(self.weights_of_connecting_points_dict)
         # RM.get_list_of_clusters(service_type, source, destination)
 
-    def service_response(self, service_type, cluster_graph, source, destination):
+    def service_response(self, service_type, cluster_graph, p_source, p_destination):
+        c_source, c_destination, p_source, p_destination = ClusterHead.validate_service_request(service_type, p_source, p_destination)
+        print(c_source, c_destination, p_source, p_destination)
+        # sys.exit("Here i am")
         datacontext = self.requirement_to_datacontext(service_type)
         # datacontext = [[{'d2'}, {'d3'}]]
         context_used_before = self.check_in_CGL(datacontext)
@@ -253,7 +286,7 @@ class ClusterHead:
         print("Updated CGL", context_used_before, self.CGL)
         print("list of connecting point", self.weights_of_connecting_points_dict)
         assign_weights_to_edges(self.weights_of_connecting_points_dict)
-        list_of_involved_clusters = get_list_of_clusters(cluster_graph, source, destination)
+        list_of_involved_clusters = get_list_of_clusters(cluster_graph, c_source, c_destination)
         for each in list_of_involved_clusters:
             each.internal_service_response(service_type)
         # communicate_with_other_clusters(service_type, source, destination)
@@ -261,7 +294,7 @@ class ClusterHead:
         # ResM.assign_weights_to_edges(self.weights_of_connecting_points_dict)
         # ResM.communicate_with_other_clusters(service_type, source, destination)
         # path = self.compute_shortest_path_heuristic()
-        sp.compute_shortest_path_heuristic(connecting_point_graph)
+        sp.compute_shortest_path_heuristic(connecting_point_graph, p_source, p_destination)
 
 
 

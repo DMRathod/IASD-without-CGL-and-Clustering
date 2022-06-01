@@ -7,3 +7,6 @@ class ConnectingPoint:
         self.x_coordinate = x_coordinate
         self.y_coordinate = y_coordinate
 
+        self.parent_cluster = None
+
+

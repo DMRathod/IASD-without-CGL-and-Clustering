@@ -1,9 +1,5 @@
 import sys
-
-
-
-
-def compute_shortest_path_heuristic(connecting_point_graph):
+def compute_shortest_path_heuristic(connecting_point_graph, p_source, p_destination):
     init_graph = {}
     for key, values in connecting_point_graph.items():
         init_graph[key.name] = {}
@@ -13,9 +9,11 @@ def compute_shortest_path_heuristic(connecting_point_graph):
 
     # print(init_graph)
     graph = Graph(init_graph.keys(), init_graph)
-    print(graph.get_nodes())
-    previous_nodes, shortest_path = dijkstra_algorithm(graph=graph, start_node='a')
-    print_result(previous_nodes, shortest_path, start_node="a", target_node="k")
+    print("Nodes :", graph)
+    for key, value in graph.items():
+        print(key, value)
+    previous_nodes, shortest_path = dijkstra_algorithm(graph=graph, start_node=p_source)
+    print_result(previous_nodes, shortest_path, start_node=p_source, target_node=p_destination)
 
     #
     # for k, v in connecting_point_graph.items():

@@ -18,4 +18,4 @@ def Init_structure():
     result = Config_of_cluster_heads.assign_connecting_points1()
     number_of_nodes = 20
     list_of_all_nodes = An.assign_nodes_to_cluster(number_of_nodes)
-    return list_of_all_nodes, cluster_graph, point_graph
+    return list_of_all_nodes, cluster_graph, connecting_point_graph

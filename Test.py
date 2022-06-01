@@ -1,13 +1,15 @@
-class Test:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
+import networkx as nx
 
-    def myfunc(self):
-        print("Hello my name is " + self.name)
+graph = {
+    'a': ['c'],
+    'b': ['d'],
+    'c': ['e'],
+    'd': ['a', 'd'],
+    'e': ['b', 'c']
+}
 
 
-# p1 = Person("John", 36)
-# p1.myfunc()
-s = {'1'}
-print(dir(s))
+g =nx.from_dict_of_lists(graph)
+
+h = g.edges()
+print(h)
