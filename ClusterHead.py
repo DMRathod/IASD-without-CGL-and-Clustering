@@ -91,25 +91,49 @@ def average_weights(values):
 #
 
 
-def assign_weights_to_edges(weights_of_connecting_point):
-    print("weights of connecting points")
+def assign_weights_to_edges(weights_of_connecting_point, fresh=True):
+    def return_object_by_name(name):
+        for p in connecting_point_graph.keys():
+            if p.name == name:
+                return p
+
+    print("weights of edges of connecting points")
+
+    weights_of_connecting_point1 = defaultdict()
+
+    # converting all object to its origional id's
+    for k, v in weights_of_connecting_point.items():
+        key = return_object_by_name(k.name)
+        weights_of_connecting_point1[key] = v
+
 
     # for k, v in connecting_point_graph.items():
     #     print(k.name, "=>", end='')
     #     for e in v:
     #         print(e[0].name, end='')
     #     print()
-
-    for each in weights_of_connecting_point.keys():
-        print(each.name, end=" ")
-        for p in connecting_point_graph[each]:
-            if p[0] in weights_of_connecting_point.keys():
-                if p[1] != 0:
-                    temp = average_weights([weights_of_connecting_point[each], weights_of_connecting_point[p[0]]])
-                    p[1] = average_weights([p[1], temp])
-                else:
-                    p[1] = average_weights([weights_of_connecting_point[each], weights_of_connecting_point[p[0]]])
-        print()
+    if not fresh:
+        for each in weights_of_connecting_point1.keys():
+            # print(each.name, end=" ")
+            for p in connecting_point_graph[each]:
+                if p[0] in weights_of_connecting_point1.keys():
+                    if p[1] != 0:
+                        temp = average_weights([weights_of_connecting_point1[each], weights_of_connecting_point1[p[0]]])
+                        p[1] = average_weights([p[1], temp])
+                    else:
+                        p[1] = average_weights([weights_of_connecting_point1[each], weights_of_connecting_point1[p[0]]])
+        # sys.exit("I am here")
+    else:
+        for each in weights_of_connecting_point.keys():
+            # print(each.name, end=" ")
+            for p in connecting_point_graph[each]:
+                if p[0] in weights_of_connecting_point.keys():
+                    if p[1] != 0:
+                        temp = average_weights([weights_of_connecting_point[each], weights_of_connecting_point[p[0]]])
+                        p[1] = average_weights([p[1], temp])
+                    else:
+                        p[1] = average_weights([weights_of_connecting_point[each], weights_of_connecting_point[p[0]]])
+    #     # print()
             # print(p[0].name, p[1])
     for k, v in connecting_point_graph.items():
         print(k.name, "=>", end='')
@@ -150,7 +174,7 @@ def get_list_of_clusters(graph, source, destination):
         temp = queue.pop(0)
         # print(temp, i)
         # j += 1
-        if Euclidean_dist(temp, destination1) <= limitation_factor * (Euclidean_dist(source1, destination1)):
+        if Euclidean_dist(temp, source1) <= Euclidean_dist(destination1, source1) and Euclidean_dist(temp, destination1) <= limitation_factor * (Euclidean_dist(source1, destination1)):
             list_of_cluster_heads.append(temp)
             # print(graph[temp])
             for i in graph[temp]:
@@ -177,6 +201,8 @@ class ClusterHead:
         self.x_coordinate = x_coordinate
         self.y_coordinate = y_coordinate
         l, self.CGL = self.initiate_CGL()
+        self.datacontext_dict = defaultdict()
+        self.initiate_weight_dict()
 
     # return after checking if any other valid connecting point or not
     # def include_connecting_points(self, points, bound):
@@ -215,14 +241,14 @@ class ClusterHead:
         for each in list_of_connecting_points:
             if source[0] == each.x_coordinate and source[1] == each.y_coordinate:
                 temp_source = (each.parent_cluster.x_coordinate, each.parent_cluster.y_coordinate)
-                point_source = each.name
+                point_source = each
                 print("Source Found")
                 source_flag = True
             if destination[0] == each.x_coordinate and destination[1] == each.y_coordinate:
                 temp_destination = (each.parent_cluster.x_coordinate, each.parent_cluster.y_coordinate)
                 destination_flag = True
-                point_destination = each.name
-            print(each.name, " x: ", each.x_coordinate, " y: ", each.y_coordinate)
+                point_destination = each
+            # print(each.name, " x: ", each.x_coordinate, " y: ", each.y_coordinate)
         if not source_flag or not destination_flag or service_type != 1:
             sys.exit("Source or Destination point Does not exist or service type does not matched")
         return temp_source, temp_destination, point_source, point_destination
@@ -251,6 +277,21 @@ class ClusterHead:
             self.CGL = self.update_CGL(datacontext,  load_old=True)
             self.compute_connecting_point_weight_from_datacontext(datacontext)
 
+            self.datacontext_dict[frozenset(datacontext[0][0])] = self.weights_of_connecting_points_dict
+            self.store_weight_dict(self.datacontext_dict)
+            assign_weights_to_edges(self.weights_of_connecting_points_dict, fresh=True)
+        else:
+            print('Loading connecting point weights from file...(datacontext is used before)')
+            weight_dictn = self.load_weight_dict()
+            print(self.weights_of_connecting_points_dict)
+            self.weights_of_connecting_points_dict = weight_dictn[frozenset(datacontext[0][0])] # when will you get back this object address will be changed so be careful when you are using it.
+            print(self.weights_of_connecting_points_dict) # check different address of the each object.
+            # for key, value in self.weights_of_connecting_points_dict.items():
+            #     print(key.name, "=>", value )
+            assign_weights_to_edges(self.weights_of_connecting_points_dict, fresh=False)
+
+        #
+
         # datacontext = [[{'d2', 'd3'}]]
         # context_used_before = self.check_in_CGL(datacontext)
         # print("data context = ", datacontext)
@@ -260,32 +301,41 @@ class ClusterHead:
         print("Updated CGL", context_used_before, self.CGL)
         # print("list of connecting point", self.weights_of_connecting_points_dict)
         # ResM.assign_weights_to_edges(self.weights_of_connecting_points_dict)
-        assign_weights_to_edges(self.weights_of_connecting_points_dict)
         # RM.get_list_of_clusters(service_type, source, destination)
 
-    def service_response(self, service_type, cluster_graph, p_source, p_destination):
+    def service_response(self, service_type, cluster_graph, p_source, p_destination, intent):
         c_source, c_destination, p_source, p_destination = ClusterHead.validate_service_request(service_type, p_source, p_destination)
-        print(c_source, c_destination, p_source, p_destination)
+        # print("idhar ", c_source, c_destination, p_source, p_destination)
         # sys.exit("Here i am")
-        datacontext = self.requirement_to_datacontext(service_type)
-        # datacontext = [[{'d2'}, {'d3'}]]
-        context_used_before = self.check_in_CGL(datacontext)
-        print("data context = ", datacontext, "For Cluster ", self.name)
-
-
-        if not context_used_before:
-            self.CGL = self.update_CGL(datacontext,  load_old=True)
-            self.compute_connecting_point_weight_from_datacontext(datacontext)
-
-        # datacontext = [[{'d2', 'd3'}]]
+        # datacontext_dict = defaultdict()
+        # datacontext = self.requirement_to_datacontext(service_type)
+        # # datacontext = [[{'d2'}, {'d3'}]]
         # context_used_before = self.check_in_CGL(datacontext)
-        # print("data context = ", datacontext)
+        # print("data context = ", datacontext, "For Cluster ", self.name)
+        #
         # if not context_used_before:
-            # self.CGL = self.update_CGL(datacontext,  load_old=True)
-
-        print("Updated CGL", context_used_before, self.CGL)
-        print("list of connecting point", self.weights_of_connecting_points_dict)
-        assign_weights_to_edges(self.weights_of_connecting_points_dict)
+        #     self.CGL = self.update_CGL(datacontext,  load_old=True)
+        #     self.compute_connecting_point_weight_from_datacontext(datacontext)
+        #     # print("data", frozenset(datacontext[0][0]))
+        #     # self.datacontext_dict[datacontext[0]] = self.weights_of_connecting_points_dict
+        #
+        #     # store the connecting point weights into the file for nearer future use
+        #     self.datacontext_dict[frozenset(datacontext[0][0])] = self.weights_of_connecting_points_dict
+        #     self.store_weight_dict(self.datacontext_dict)
+        # else:
+        #     print('Loading connecting point weights from file...(datacontext is used before)')
+        #     weight_dictn = self.load_weight_dict()
+        #     self.weights_of_connecting_points_dict = weight_dictn[frozenset(datacontext[0][0])]
+        #
+        # # datacontext = [[{'d2', 'd3'}]]
+        # # context_used_before = self.check_in_CGL(datacontext)
+        # # print("data context = ", datacontext)
+        # # if not context_used_before:
+        #     # self.CGL = self.update_CGL(datacontext,  load_old=True)
+        #
+        # print("Updated CGL", context_used_before, self.CGL)
+        # print("list of connecting point", self.weights_of_connecting_points_dict)
+        # assign_weights_to_edges(self.weights_of_connecting_points_dict)
         list_of_involved_clusters = get_list_of_clusters(cluster_graph, c_source, c_destination)
         for each in list_of_involved_clusters:
             each.internal_service_response(service_type)
@@ -294,7 +344,8 @@ class ClusterHead:
         # ResM.assign_weights_to_edges(self.weights_of_connecting_points_dict)
         # ResM.communicate_with_other_clusters(service_type, source, destination)
         # path = self.compute_shortest_path_heuristic()
-        sp.compute_shortest_path_heuristic(connecting_point_graph, p_source, p_destination)
+        # return
+        sp.compute_shortest_heuristic_path_with_intent(connecting_point_graph, p_source, p_destination, intent)
 
 
 
@@ -330,6 +381,14 @@ class ClusterHead:
         dbfile.close()
         return self.load_from_file()
 
+    def initiate_weight_dict(self):
+        weight_dict = defaultdict()
+        db = weight_dict
+        dbfile = open(self.name+"wdict", 'wb')
+        pickle.dump(db, dbfile)
+        dbfile.close()
+
+
     def load_from_file(self):
         dbfile = open(self.name, 'rb')
         db = pickle.load(dbfile)
@@ -338,11 +397,24 @@ class ClusterHead:
         dbfile.close()
         return db[0], db[1]
 
+    def load_weight_dict(self):
+        dbfile = open(self.name+"wdict", 'rb')
+        db = pickle.load(dbfile)
+        dbfile.close()
+        return db
+
     def store_in_file(self, len_to_nodes, CGL_dict):
         db = (len_to_nodes, CGL_dict)
         dbfile = open(self.name, 'wb')
         pickle.dump(db, dbfile)
         dbfile.close()
+
+    def store_weight_dict(self, weight_dict):
+        db = weight_dict
+        dbfile = open(self.name+"wdict", 'wb')
+        pickle.dump(db, dbfile)
+        dbfile.close()
+
 
     def update_CGL(self, test_cases, load_old=True):
         # first = False

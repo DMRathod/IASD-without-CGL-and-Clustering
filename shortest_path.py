@@ -1,19 +1,58 @@
 import sys
-def compute_shortest_path_heuristic(connecting_point_graph, p_source, p_destination):
+import numpy as np
+
+def compute_shortest_heuristic_path_with_intent(connecting_point_graph, p_source, p_destination, intent):
     init_graph = {}
+    nodes_with_intent = []
+    print("Points with intent : ", end=" ")
     for key, values in connecting_point_graph.items():
         init_graph[key.name] = {}
+        if key.intent_id == intent:
+            dis_destination = np.sqrt((key.x_coordinate - p_destination.x_coordinate) ** 2 + (key.y_coordinate - p_destination.y_coordinate) ** 2)
+            source_destination = np.sqrt((p_source.x_coordinate - p_destination.x_coordinate) ** 2 + (p_source.y_coordinate - p_destination.y_coordinate) ** 2)
+            if dis_destination <= (0.75) * source_destination:
+                print(key.name, end=" ")
+                # print(dis_destination, source_destination)
+                nodes_with_intent.append(key)
         for i in values:
             if i[1] != 0:
                 init_graph[key.name][i[0].name] = i[1]
+    print()
 
-    # print(init_graph)
-    graph = Graph(init_graph.keys(), init_graph)
-    print("Nodes :", graph)
-    for key, value in graph.items():
-        print(key, value)
-    previous_nodes, shortest_path = dijkstra_algorithm(graph=graph, start_node=p_source)
-    print_result(previous_nodes, shortest_path, start_node=p_source, target_node=p_destination)
+    if nodes_with_intent != []:
+        # this small code will find the closest node with intent
+        lower_distance = float('inf')
+        intent_point = None
+        for each in nodes_with_intent:
+            d_to_destination = np.sqrt((each.x_coordinate - p_destination.x_coordinate) ** 2 + (each.y_coordinate - p_destination.y_coordinate) ** 2)
+            d_to_source = np.sqrt((each.x_coordinate - p_source.x_coordinate) ** 2 + (each.y_coordinate - p_source.y_coordinate) ** 2)
+            d = min(d_to_source, d_to_destination)
+            if lower_distance > d:
+                lower_distance = d
+                intent_point = each
+
+        if intent_point == None:
+            sys.exit()
+        # print(init_graph)
+        graph = Graph(init_graph.keys(), init_graph)
+        # print("Nodes :", graph)
+        # for key, value in graph.items():
+        # print(key, value)
+        previous_nodes, shortest_path = dijkstra_algorithm(graph=graph, start_node=p_source.name)
+        path, heuristic_cost1 = print_result(previous_nodes, shortest_path, start_node=p_source.name, target_node=intent_point.name)
+        previous_nodes, shortest_path = dijkstra_algorithm(graph=graph, start_node=intent_point.name)
+        temp_rslt, heuristic_cost2 = print_result(previous_nodes, shortest_path, start_node=intent_point.name, target_node=p_destination.name, flag=False)
+        path = path + (" -> "+temp_rslt if temp_rslt else temp_rslt)
+        heuristic_cost1 += heuristic_cost2
+        print("Path : ", path)
+        print("Heuristic_cost : ", heuristic_cost1)
+    else:
+        print("Intent aware path does not exist within the range hence context-aware path is as below :")
+        graph = Graph(init_graph.keys(), init_graph)
+        previous_nodes, shortest_path = dijkstra_algorithm(graph=graph, start_node=p_source.name)
+        path, heuristic_cost1 = print_result(previous_nodes, shortest_path, start_node=p_source.name, target_node=p_destination.name)
+        print("Path : ", path)
+        print("Heuristic_cost : ", heuristic_cost1)
 
     #
     # for k, v in connecting_point_graph.items():
@@ -47,7 +86,7 @@ def dijkstra_algorithm(graph, start_node):
         # The code block below finds the node with the lowest score
         current_min_node = None
         for node in unvisited_nodes: # Iterate over the nodes
-            if current_min_node == None:
+            if current_min_node==None:
                 current_min_node = node
             elif shortest_path[node] < shortest_path[current_min_node]:
                 current_min_node = node
@@ -67,7 +106,7 @@ def dijkstra_algorithm(graph, start_node):
     return previous_nodes, shortest_path
 
 
-def print_result(previous_nodes, shortest_path, start_node, target_node):
+def print_result(previous_nodes, shortest_path, start_node, target_node, flag=True):
     path = []
     node = target_node
 
@@ -78,8 +117,11 @@ def print_result(previous_nodes, shortest_path, start_node, target_node):
     # Add the start node manually
     path.append(start_node)
 
-    print("We found the following best path with a value of {}.".format(shortest_path[target_node]))
-    print(" -> ".join(reversed(path)))
+    # print("We found the following best path with a value of {}.".format(shortest_path[target_node]))
+    if flag:
+        return " -> ".join(reversed(path[:])), shortest_path[target_node]
+    else:
+        return " -> ".join(reversed(path[:-1])), shortest_path[target_node]
 
 
 class Graph(object):
