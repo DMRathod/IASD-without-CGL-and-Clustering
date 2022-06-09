@@ -49,8 +49,7 @@ class CreateConnectingPoint:
 
     def __init__(self):
         pass
-        # self.list_of_all_connecting_points.extend([self.a, self.b, self.c, self.d,self.e, self.f, self.g, self.h, self.i, self.j, self.k, self.l, self.m, self.n, self.o, self.p, self.q, self.r, self.s, self.t])
-
+    
 
     def get_connecting_points(self):
         return self.list_of_all_connecting_points
